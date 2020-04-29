@@ -6,11 +6,8 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-improt
 
-from ecdf import ecdf_1D
-
-#import data
+# import data
 iris_data = pd.read_csv('Iris.csv')
 sns.set()
 
