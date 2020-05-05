@@ -6,15 +6,14 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-
-from pcc import pcc
+import numpy as np
 
 # import data
 iris_data = pd.read_csv('Iris.csv')
 sns.set()
 
 # check data columns
-# print(iris_data.head())
+print(iris_data.head())
 
 # extract lengths
 setosa_petal_lengths = iris_data[iris_data['Species'] == "Iris-setosa"] ["PetalLengthCm"]
@@ -40,9 +39,10 @@ plt.margins(0.02)
 plt.legend(('setosa', 'versicolor', 'virginica'), loc = 'lower right')
 
 # Show graphs
-plt.show()
+# plt.show()
 
 #check covariances
-print("Setosa: ", pcc(setosa_petal_lengths,setosa_petal_widths))
-print("Versicolor: ", pcc(versicolor_petal_lengths,versicolor_petal_widths))
-print("Virginica: ", pcc(virginica_petal_lengths,virginica_petal_widths))
+# stats = iris_data.groupby("Species")[["PetalLengthCm", "PetalWidthCm"]].agg([np.mean, np.median])
+stats = iris_data.pivot_table(values=["PetalLengthCm", "PetalWidthCm"], \
+                                index="Species", aggfunc=[np.mean, np.median], margins=True)
+print(stats)

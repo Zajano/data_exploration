@@ -47,14 +47,6 @@ for petal in species_petal_widths:
     if petal[1] == 'Iris-virginica':
         virginica_petal_widths.append(petal[0])
 
-#################### MAKING 1-D PETAL LENGTH/WIDTH ARRAYS #####################
-#get flower sepal values
-# setosa_petal_volumes = []
-# versicolor_petal_volumes = []
-# virginica_petal_volumes = []
-# for i in range (0, len(setosa_petal_widths)):
-
-
 #plot scatters of petals
 plt.plot(setosa_petal_lengths, setosa_petal_widths, marker = '.', linestyle = 'none')
 plt.plot(versicolor_petal_lengths, versicolor_petal_widths, marker = 'x', linestyle = 'none')
