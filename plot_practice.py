@@ -28,7 +28,7 @@ plt.xlabel('Sepal Length (cm)')
 plt.ylabel('Number of Samples')
 
 #plot bee swarm of petal lengths
-# sns.swarmplot(x='Species',y='PetalLengthCm', data=iris_data)
+sns.swarmplot(x='Species',y='PetalLengthCm', data=iris_data)
 
 # plt.hist([setosa_sepal_lengths, versicolor_sepal_lengths, virginica_sepal_lengths], bins = 10)
 # plt.legend(('setosa', 'versicolor', 'virginica'), loc = 'lower right')
