@@ -13,7 +13,7 @@ import time
 url = 'https://boardgamegeek.com/browse/boardgame/page/'
 
 # gets html content from given url + safety sleep
-time.sleep(1)
+# time.sleep(1)
 html = requests.get(url).content
 
 # selector object to navigate
@@ -32,7 +32,7 @@ game_links = []
 bgg = "https://boardgamegeek.com"
 
 # loop through every page to get board game links
-for i in range(1,4):
+for i in range(1,2):
 
     # build on base url to iterate through pages
     url2 = url + str(i)
@@ -57,5 +57,16 @@ for i in range(1,4):
 
 print(len(game_links))
 
-for i in range(6):
-    print(game_links[i])
+time.sleep(1)
+html = requests.get(game_links[0]).content
+
+# selector object to navigate
+sel = Selector(text = html)
+
+name_path = '//meta[@name="title"]/@content'
+
+print(sel.xpath(name_path).extract())
+
+# html_file = open("html_stuff.txt", "w")
+# html_file.write(print(html))
+# html_file.close()

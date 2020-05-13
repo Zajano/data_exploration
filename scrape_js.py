@@ -3,28 +3,10 @@
 # Description: scraping dynamic javascript
 
 # scraping modules
-from requests_html import HTMLSession
-from bs4 import BeautifulSoup
-import requests
-from scrapy import Selector
+from selenium.webdriver import Chrome
+import pandas as pd
 
-# time delay for requests
-import time
+webdriver = "C:\\Users\\Zack\\Desktop\\OSU\\406 - p1 - stats\\test_files\\chromedriver.exe"
 
-# create an HTML Session object
-session = HTMLSession()
+driver = Chrome(webdriver)
 
-# Use the object above to connect to needed webpage
-time.sleep(1)
-resp = session.get("https://finance.yahoo.com/quote/NFLX/options?p=NFLX")
-
-# Run JavaScript code on webpage
-resp.html.render()
-
-option_tags = resp.html.find("option")
-
-print(resp.html.html)
-
-dates = [tag.text for tag in option_tags]
-
-print(dates)
