@@ -10,3 +10,10 @@ webdriver = "C:\\Users\\Zack\\Desktop\\OSU\\406 - p1 - stats\\test_files\\chrome
 
 driver = Chrome(webdriver)
 
+for page in range(1, 10):
+
+    url = "http://quotes.toscrape.com/js/page/" + str(page) + "/"
+
+    driver.get(url)
+
+    items = len(driver.find_element_by)

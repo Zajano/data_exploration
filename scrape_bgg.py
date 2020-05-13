@@ -13,34 +13,20 @@ import time
 url1 = 'https://boardgamegeek.com/browse/boardgame/page/'
 url2 = '?sort=numvoters&sortdir=desc'
 
-# gets html content from given url + safety sleep
-# time.sleep(1)
-html = requests.get(url).content
-
-# selector object to navigate
-sel = Selector(text = html)
-
-# built path from analyzing html
-x_path = '//a[@title="last page"]/text()'
-
-# extract text value from navigated path and convert
-pages_text = sel.xpath(x_path).extract_first()
-num_pages = int(pages_text[1:-1])
-print(num_pages)
-
 #variables for use in loop
 game_links = []
 bgg = "https://boardgamegeek.com"
 
 # loop through every page to get board game links
+# first 256 pages of bgg
 for i in range(1,2):
 
     # build on base url to iterate through pages
-    url2 = url + str(i)
+    url = url1 + str(i) + url2
 
     # gets html content from given url
     time.sleep(1)
-    html = requests.get(url2).content
+    html = requests.get(url).content
 
     # selector object to navigate
     sel = Selector(text = html)
