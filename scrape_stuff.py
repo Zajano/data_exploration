@@ -1,5 +1,5 @@
 # Author: Zack Jaffe-Notier
-# Date: 5/6/2020
+# Date: 5/8/2020
 # Description: scraping basics
 
 # scraping modules
@@ -25,6 +25,7 @@ x_path = '//a[@title="last page"]/text()'
 # extract text value from navigated path and convert
 pages_text = sel.xpath(x_path).extract_first()
 num_pages = int(pages_text[1:-1])
+print(num_pages)
 
 #variables for use in loop
 game_links = []
@@ -32,6 +33,8 @@ bgg = "https://boardgamegeek.com"
 
 # loop through every page to get board game links
 for i in range(1,4):
+
+    # build on base url to iterate through pages
     url2 = url + str(i)
 
     # gets html content from given url
