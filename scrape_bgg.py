@@ -75,20 +75,19 @@ for i in range(3):
     #get info from stats
     time.sleep(1)
     driver.get(stats)
-
-    title = driver.find_elements_by_xpath('//meta[@name="title"]/@content').extract
+    title = driver.find_elements_by_xpath('//div[@class="game-header-title-info"]/h1/a')[0].text
     avg_rating = driver.find_elements_by_xpath('//div[@class="row game-stats"]\
-    /div[2]/div/div[2]/ul/li[1]/div[2]/a/text()').extract
+    /div[2]/div/div[2]/ul/li[1]/div[2]/a')[0].text
     no_ratings = driver.find_elements_by_xpath('//div[@class="row game-stats"]\
-    /div[2]/div/div[2]/ul/li[2]/div[2]/a/text()').extract
+    /div[2]/div/div[2]/ul/li[2]/div[2]/a')[0].text
     complexity = driver.find_elements_by_xpath('//div[@class="row game-stats"]\
-    /div[2]/div/div[2]/ul/li[4]/div[2]/a/span/text()').extract
+    /div[2]/div/div[2]/ul/li[4]/div[2]/a/span')[0].text
     comments = driver.find_elements_by_xpath('//div[@class="row game-stats"]\
-    /div[2]/div/div[2]/ul/li[5]/div[2]/a/text()').extract
+    /div[2]/div/div[2]/ul/li[5]/div[2]/a')[0].text
     fans = driver.find_elements_by_xpath('//div[@class="row game-stats"]\
-    /div[2]/div/div[2]/ul/li[6]/div[2]/a/text()').extract
+    /div[2]/div/div[2]/ul/li[6]/div[2]/a')[0].text
     views = driver.find_elements_by_xpath('//div[@class="row game-stats"]\
-    /div[2]/div/div[2]/ul/li[7]/div[2]/text()').extract
+    /div[2]/div/div[2]/ul/li[7]/div[2]')[0].text
 
     addition = ((title,
                  avg_rating,
@@ -99,6 +98,7 @@ for i in range(3):
                  views))
     game_info.append(addition)
 
+# print(game_info)
 df = pd.DataFrame(game_info,
                   columns=['title',
                            'avg_rating',
