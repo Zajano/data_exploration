@@ -29,7 +29,7 @@ bgg = "https://boardgamegeek.com"
 
 # loop through every page to get board game links
 # first 256 pages of bgg
-for i in range(1,10):
+for i in range(1,256):
 
     # build on base url to iterate through pages
     url = url1 + str(i) + url2
