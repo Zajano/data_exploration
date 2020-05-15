@@ -28,7 +28,7 @@ bgg = "https://boardgamegeek.com"
 
 # loop through every page to get board game links
 # first 256 pages of bgg
-for i in range(1,5):
+for i in range(1,10):
 
     # build on base url to iterate through pages
     url = url1 + str(i) + url2
@@ -67,92 +67,92 @@ for i in range(len(game_links)):
     driver.get(stats)
 
     #check for expansion and skip if it is
-    check_expansion = driver.find_element_by_xpath\
-        ('//div[@class="game-header-subtype ng-scope"]')
-    if check_expansion != []:
-        check_text = str(check_expansion.text)
-        if "EXPANSION" not in check_text:
+    # check_expansion = driver.find_element_by_xpath\
+    #     ('//div[@class="game-header-subtype ng-scope"]')
+    # if check_expansion != []:
+    #     check_text = str(check_expansion.text)
+    #     if "EXPANSION" not in check_text:
 
-            #gather elements from /stats page
-            title = driver.find_elements_by_xpath\
-                ('//div[@class="game-header-title-info"]/h1/a')
-            year = driver.find_elements_by_xpath\
-                ('//div[@class="game-header-title-info"]/h1/span')
-            min_players = driver.find_elements_by_xpath\
-                ('//ul[@class="gameplay"]/li[1]/div/span/span[1]')
-            max_players = driver.find_elements_by_xpath\
-                ('//ul[@class="gameplay"]/li[1]/div/span/span[2]')
-            avg_time = driver.find_elements_by_xpath\
-                ('//ul[@class="gameplay"]/li[2]/div/span/span/span[1]')
-            max_time = driver.find_elements_by_xpath\
-                ('//ul[@class="gameplay"]/li[2]/div/span/span/span[2]')
-            geek_age = driver.find_elements_by_xpath\
-                ('//ul[@class="gameplay"]/li[3]/div[1]/span')
-            community_age = driver.find_elements_by_xpath\
-                ('//ul[@class="gameplay"]/li[3]/div[2]/span/button/span')
-            avg_rating = float(driver.find_elements_by_xpath\
-                ('//div[@class="row game-stats"]/div[2]/div/div[2]/ul/li[1]/div[2]/a')[0].text)
-            no_ratings = driver.find_elements_by_xpath\
-                ('//div[@class="row game-stats"]/div[2]/div/div[2]/ul/li[2]/div[2]/a')[0].text
-            complexity = driver.find_elements_by_xpath\
-                ('//div[@class="row game-stats"]/div[2]/div/div[2]/ul/li[4]/div[2]/a/span')
-            comments = driver.find_elements_by_xpath\
-            ('//div[@class="row game-stats"]/div[2]/div/div[2]/ul/li[5]/div[2]/a')[0].text
-            fans = driver.find_elements_by_xpath\
-            ('//div[@class="row game-stats"]/div[2]/div/div[2]/ul/li[6]/div[2]/a')[0].text
-            views = driver.find_elements_by_xpath\
-            ('//div[@class="row game-stats"]/div[2]/div/div[2]/ul/li[7]/div[2]')[0].text
+    #gather elements from /stats page
+    title = driver.find_elements_by_xpath\
+        ('//div[@class="game-header-title-info"]/h1/a')
+    year = driver.find_elements_by_xpath\
+        ('//div[@class="game-header-title-info"]/h1/span')
+    min_players = driver.find_elements_by_xpath\
+        ('//ul[@class="gameplay"]/li[1]/div/span/span[1]')
+    max_players = driver.find_elements_by_xpath\
+        ('//ul[@class="gameplay"]/li[1]/div/span/span[2]')
+    avg_time = driver.find_elements_by_xpath\
+        ('//ul[@class="gameplay"]/li[2]/div/span/span/span[1]')
+    max_time = driver.find_elements_by_xpath\
+        ('//ul[@class="gameplay"]/li[2]/div/span/span/span[2]')
+    geek_age = driver.find_elements_by_xpath\
+        ('//ul[@class="gameplay"]/li[3]/div[1]/span')
+    community_age = driver.find_elements_by_xpath\
+        ('//ul[@class="gameplay"]/li[3]/div[2]/span/button/span')
+    avg_rating = float(driver.find_elements_by_xpath\
+        ('//div[@class="row game-stats"]/div[2]/div/div[2]/ul/li[1]/div[2]/a')[0].text)
+    no_ratings = driver.find_elements_by_xpath\
+        ('//div[@class="row game-stats"]/div[2]/div/div[2]/ul/li[2]/div[2]/a')[0].text
+    complexity = driver.find_elements_by_xpath\
+        ('//div[@class="row game-stats"]/div[2]/div/div[2]/ul/li[4]/div[2]/a/span')
+    comments = driver.find_elements_by_xpath\
+    ('//div[@class="row game-stats"]/div[2]/div/div[2]/ul/li[5]/div[2]/a')[0].text
+    fans = driver.find_elements_by_xpath\
+    ('//div[@class="row game-stats"]/div[2]/div/div[2]/ul/li[6]/div[2]/a')[0].text
+    views = driver.find_elements_by_xpath\
+    ('//div[@class="row game-stats"]/div[2]/div/div[2]/ul/li[7]/div[2]')[0].text
 
-            #check for valid entires and clean data
-            if title != []:
-                title = title[0].text
-            if year != []:
-                year = int(year[0].text[1:-1])
-            if min_players != []:
-                min_players = int(min_players[0].text)
-            if max_players != []:
-                max_players = int(max_players[0].text[1:])
-            if avg_time != []:
-                avg_time = int(avg_time[0].text)
-            if max_time != []:
-                max_time = int(max_time[0].text[1:])
-                avg_time = int((avg_time + max_time) // 2)
-            if geek_age != []:
-                geek_age = int(geek_age[0].text[:-1])
-            if community_age != []:
-                community_age = community_age[0].text
-                if community_age != "(no votes)" :
-                    community_age = community_age[:-1]
-                else:
-                    community_age = []
-            if complexity != []:
-                complexity = float(complexity[0].text)
+    #check for valid entires and clean data
+    if title != []:
+        title = title[0].text
+    if year != []:
+        year = int(year[0].text[1:-1])
+    if min_players != []:
+        min_players = int(min_players[0].text)
+    if max_players != []:
+        max_players = int(max_players[0].text[1:])
+    if avg_time != []:
+        avg_time = int(avg_time[0].text)
+    if max_time != []:
+        max_time = int(max_time[0].text[1:])
+        avg_time = int((avg_time + max_time) // 2)
+    if geek_age != []:
+        geek_age = int(geek_age[0].text[:-1])
+    if community_age != []:
+        community_age = community_age[0].text
+        if community_age != "(no votes)" :
+            community_age = community_age[:-1]
+        else:
+            community_age = []
+    if complexity != []:
+        complexity = float(complexity[0].text)
 
-            #get rid of commas in numbers
-            no_ratings = int(no_ratings.replace(',', ''))
-            comments = int(comments.replace(',', ''))
-            fans = int(fans.replace(',', ''))
-            views = int(views.replace(',', ''))
+    #get rid of commas in numbers
+    no_ratings = int(no_ratings.replace(',', ''))
+    comments = int(comments.replace(',', ''))
+    fans = int(fans.replace(',', ''))
+    views = int(views.replace(',', ''))
 
-            print(title, " ",year, " ", min_players, " ", max_players, " ", avg_time)
+    print(title, " ",year, " ", min_players, " ", max_players, " ", avg_time)
 
 
-            addition = ((title,
-                         year,
-                         min_players,
-                         max_players,
-                         avg_time,
-                         geek_age,
-                         community_age,
-                         avg_rating,
-                         no_ratings,
-                         complexity,
-                         comments,
-                         fans,
-                         views))
-            game_info.append(addition)
-#
-# # print(game_info)
+    addition = ((title,
+                 year,
+                 min_players,
+                 max_players,
+                 avg_time,
+                 geek_age,
+                 community_age,
+                 avg_rating,
+                 no_ratings,
+                 complexity,
+                 comments,
+                 fans,
+                 views))
+    game_info.append(addition)
+
+# print(game_info)
 df = pd.DataFrame(game_info,
                   columns=[title,
                          year,
@@ -168,7 +168,7 @@ df = pd.DataFrame(game_info,
                          fans,
                          views])
 
-print(df.head())
+# print(df.head())
 df.to_csv('game_info.csv')
 driver.close()
 
