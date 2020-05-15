@@ -14,8 +14,9 @@ import csv
 # time delay for requests
 import time
 
-# driver to crawl links
-webdriver = "C:\\Users\\Zack\\Desktop\\OSU\\406 - p1 - stats\\test_files\\chromedriver.exe"
+# driver to crawl links - paths for 2 different computers
+# webdriver = "C:\\Users\\Zack\\Desktop\\OSU\\406 - p1 - stats\\test_files\\chromedriver.exe"
+webdriver = "C:\\Users\\zacki\\Desktop\\OSU\\406 - p1 - stats\\test_files\\chromedriver.exe"
 driver = Chrome(webdriver)
 
 # starting urls for game list without page number
@@ -134,7 +135,7 @@ for i in range(len(game_links)):
     fans = int(fans.replace(',', ''))
     views = int(views.replace(',', ''))
 
-    print(title, " ",year, " ", min_players, " ", max_players, " ", avg_time)
+    print(title, " ",year, " ", min_players, " ", max_players, " ", avg_time, " ", )
 
 
     addition = ((title,
@@ -153,22 +154,22 @@ for i in range(len(game_links)):
     game_info.append(addition)
 
 # print(game_info)
-df = pd.DataFrame(game_info,
-                  columns=[title,
-                         year,
-                         min_players,
-                         max_players,
-                         avg_time,
-                         geek_age,
-                         community_age,
-                         avg_rating,
-                         no_ratings,
-                         complexity,
-                         comments,
-                         fans,
-                         views])
+cols = ["title",
+         "year",
+         "min_players",
+         "max_players",
+         "avg_time",
+         "geek_age",
+         "community_age",
+         "avg_rating",
+         "no_ratings",
+         "complexity",
+         "comments",
+         "fans",
+         "views"]
+df = pd.DataFrame(game_info, columns= cols)
 
-# print(df.head())
+print(df.head())
 df.to_csv('game_info.csv')
 driver.close()
 
