@@ -29,8 +29,12 @@ xplot = range(len(bgg_data[bgg_data["year"] > 1989]))
 
 # boxplot by year and rating
 # sns.boxplot(x='year', y='avg_rating', data = bgg2)
+
+# convert years to strings
+bgg2.year=bgg2.year.astype(str)
+
 sns.lineplot(x='year', y='avg_rating', data=bgg2)
-sns.stripplot(x='year', y='avg_rating', data=bgg2, jitter=.45)
+sns.stripplot(x='year', y='avg_rating', data=bgg2, jitter=.3)
 
 # games_2014 = year_ind.loc[2014:2014]
 
