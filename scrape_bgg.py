@@ -54,6 +54,22 @@ for i in range(1,2):
 
 # print(len(game_links))
 
+#get list of all mechanics
+mech_page = 'https://boardgamegeek.com/browse/boardgamemechanic'
+driver.get(mech_page)
+
+mechanics_parent = driver.find_elements_by_xpath \
+    ('//*[@id="maincontent"]/table/tbody')
+
+all_mechs = []
+for element in mechanics_parent:
+    temp = element.find_elements_by_xpath \
+        ('.//a')
+    for a in temp:
+        all_mechs.append(a.text)
+
+print(all_mechs)
+
 game_info = []
 
 # for each link in game_links:
@@ -144,22 +160,28 @@ for i in range(2):
     except:
         complexity = None
 
-
     #get rid of commas in numbers
     no_ratings = int(no_ratings.replace(',', ''))
     comments = int(comments.replace(',', ''))
     fans = int(fans.replace(',', ''))
     views = int(views.replace(',', ''))
 
-    # print(title, " ",year, " ", min_players, " ", max_players, " ", avg_time, " ", )
-
     # get stuff from Credits page
     driver.get(credits)
 
-    mechanics = driver.find_elements_by_xpath\
-        ('//div[@class="game-header-title-info"]/h1/a')
+    mechanics_parent = driver.find_elements_by_xpath\
+        ('//*[@id="mainbody"]/div/div[1]/div[1]/div[2]/ng-include/div/div/ui-view/ui-view/div/div/div[2]/credits-module/ul/li[8]/div[2]/div')
 
+    mechanics = []
+    for element in mechanics_parent:
+        temp = element.find_elements_by_xpath\
+            ('.//a')
+        for a in temp:
+            mechanics.append(a.text)
 
+    # print(mechanics)
+
+#     all_mechs = [Acting
 
     addition = ((title,
                  year,
@@ -173,7 +195,8 @@ for i in range(2):
                  complexity,
                  comments,
                  fans,
-                 views))
+                 views,
+                 mechanics))
     game_info.append(addition)
 
 # print(game_info)
@@ -189,10 +212,12 @@ cols = ["title",
          "complexity",
          "comments",
          "fans",
-         "views"]
+         "views",
+         "mechanics"]
 df = pd.DataFrame(game_info, columns= cols)
 
 print(df.head())
 df.to_csv('game_garbage.csv')
+
 driver.close()
 
