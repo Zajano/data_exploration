@@ -67,7 +67,7 @@ for i in range(2):
     time.sleep(1)
     driver.get(stats)
 
-    #check for expansion and skip if it is
+    # TODO: check for expansion and skip if it is
     # check_expansion = driver.find_element_by_xpath\
     #     ('//div[@class="game-header-subtype ng-scope"]')
     # if check_expansion != []:
@@ -151,7 +151,14 @@ for i in range(2):
     fans = int(fans.replace(',', ''))
     views = int(views.replace(',', ''))
 
-    print(title, " ",year, " ", min_players, " ", max_players, " ", avg_time, " ", )
+    # print(title, " ",year, " ", min_players, " ", max_players, " ", avg_time, " ", )
+
+    # get stuff from Credits page
+    driver.get(credits)
+
+    mechanics = driver.find_elements_by_xpath\
+        ('//div[@class="game-header-title-info"]/h1/a')
+
 
 
     addition = ((title,
