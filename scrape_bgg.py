@@ -52,16 +52,15 @@ for i in range(1,2):
         game_links.append(bgg + temp_links[i])
 
 
-print(len(game_links))
+# print(len(game_links))
 
 game_info = []
 
-# for link in game_links:
+# for each link in game_links:
 for i in range(2):
 
     #pages with all the info I want
-    # stats = game_links[i] + "/stats"
-    stats = "https://boardgamegeek.com/boardgameexpansion/176425/roll-it-deluxe-edition-owlbear/stats"
+    stats = game_links[i] + "/stats"
     credits = game_links[i] + "/credits"
 
     #get list info from stats
@@ -136,12 +135,14 @@ for i in range(2):
         geek_age = None
     if community_age != []:
         community_age = community_age[0].text
-        if community_age != "(no votes)" :
+        if community_age != "(no votes)":
             community_age = community_age[:-1]
         else:
             community_age = None
-    if complexity != []:
+    try:
         complexity = float(complexity[0].text)
+    except:
+        complexity = None
 
 
     #get rid of commas in numbers
