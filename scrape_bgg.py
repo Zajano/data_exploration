@@ -29,7 +29,7 @@ bgg = "https://boardgamegeek.com"
 
 # loop through every page to get board game links
 # first 256 pages of bgg
-for i in range(1,256):
+for i in range(1,2):
 
     # build on base url to iterate through pages
     url = url1 + str(i) + url2
@@ -57,10 +57,11 @@ print(len(game_links))
 game_info = []
 
 # for link in game_links:
-for i in range(len(game_links)):
+for i in range(2):
 
     #pages with all the info I want
-    stats = game_links[i] + "/stats"
+    # stats = game_links[i] + "/stats"
+    stats = "https://boardgamegeek.com/boardgameexpansion/176425/roll-it-deluxe-edition-owlbear/stats"
     credits = game_links[i] + "/credits"
 
     #get list info from stats
@@ -109,25 +110,39 @@ for i in range(len(game_links)):
         title = title[0].text
     if year != []:
         year = int(year[0].text[1:-1])
+    else:
+        year = None
     if min_players != []:
         min_players = int(min_players[0].text)
+    else:
+        min_players = None
     if max_players != []:
         max_players = int(max_players[0].text[1:])
+    else:
+        max_players = None
     if avg_time != []:
         avg_time = int(avg_time[0].text)
+    else:
+        avg_time = None
     if max_time != []:
         max_time = int(max_time[0].text[1:])
         avg_time = int((avg_time + max_time) // 2)
     if geek_age != []:
-        geek_age = int(geek_age[0].text[:-1])
+        try:
+            geek_age = int(geek_age[0].text[:-1])
+        except:
+            geek_age = None
+    else:
+        geek_age = None
     if community_age != []:
         community_age = community_age[0].text
         if community_age != "(no votes)" :
             community_age = community_age[:-1]
         else:
-            community_age = []
+            community_age = None
     if complexity != []:
         complexity = float(complexity[0].text)
+
 
     #get rid of commas in numbers
     no_ratings = int(no_ratings.replace(',', ''))
@@ -170,6 +185,6 @@ cols = ["title",
 df = pd.DataFrame(game_info, columns= cols)
 
 print(df.head())
-df.to_csv('game_info.csv')
+df.to_csv('game_garbage.csv')
 driver.close()
 
