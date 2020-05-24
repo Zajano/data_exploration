@@ -38,7 +38,7 @@ bgg = "https://boardgamegeek.com"
 
 # loop through every page to get board game links
 # first 256 pages of bgg
-for i in range(1,5):
+for i in range(1,51):
 
     # build on base url to iterate through pages
     url = url1 + str(i) + url2
@@ -81,12 +81,12 @@ for i in range(1,5):
 #get data from BBG API requests
 base = 'http://www.boardgamegeek.com/xmlapi2/thing?id={}&stats=1'
 split = 30 # number of games per API page
-out_file = open('games3.csv', 'w')
+out_file = open('games_data.csv', 'w', encoding='utf-8')
 writer = csv.writer(out_file)
 cols = ['id', 'type', 'name', 'year', 'minplayers', 'maxplayers', 'playingtime',
                  'minplaytime', 'maxplaytime', 'minage', 'users_rated', 'avg_rating',
                  'bay_rating', 'owners', 'traders', 'wanters', 'wishers', 'total_comments',
-                 'total_weights', 'average_weight', 'categories', 'mechanics']
+                 'total_weights', 'complexity', 'categories', 'mechanics']
 writer.writerow(cols)
 
 games = []
@@ -124,10 +124,11 @@ for i in range(0, len(game_ids), split):
         this_row = ((gid, gtype, gname, gyear, gmin, gmax, gplay, gminplay, gmaxplay, gminage,
                          usersrated, avg, bayesavg, owners, traders, wanters, wishers, numcomments,
                          numweights, avgweight, categories, mechanics))
+
         writer.writerow(this_row)
         # games.append(this_row)
-
     time.sleep(2)
+
 out_file.close()
 
 # add columns for each mechanic and category

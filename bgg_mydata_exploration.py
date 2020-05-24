@@ -9,7 +9,7 @@ import seaborn as sns
 import numpy as np
 
 # import data
-bgg_data = pd.read_csv('games3.csv', encoding='latin-1')
+bgg_data = pd.read_csv('games_data.csv', encoding='latin-1')
 sns.set()
 
 # manipulate figure size
@@ -52,8 +52,8 @@ mask = bgg2.mechanics.apply(lambda x: 'Variable Player Powers' in x)
 variable_games = bgg2[mask]
 variable_games = variable_games.sort_values(['year'], ascending=[True])
 
-# sns.lineplot(x='year', y='avg_rating',data=trading_games)
-sns.lineplot(x='year', y='avg_rating',data=variable_games)
+sns.scatterplot(x='year', y='avg_rating',data=trading_games)
+sns.scatterplot(x='year', y='avg_rating',data=variable_games)
 plt.show()
 
 print (trading_games)
