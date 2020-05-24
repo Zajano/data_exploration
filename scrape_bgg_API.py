@@ -23,11 +23,9 @@ def get_val(tag, term):
         val = 'NaN'
     return val
 
-#
-
 # driver to crawl links - paths for 2 different computers
-webdriver = "C:\\Users\\zacki\\Desktop\\OSU\\406 - p1 - stats\\test_files\\chromedriver.exe"
-driver = Chrome(webdriver)
+# webdriver = "C:\\Users\\zacki\\Desktop\\OSU\\406 - p1 - stats\\test_files\\chromedriver.exe"
+# driver = Chrome(webdriver)
 
 # starting urls for game list without page number
 url1 = 'https://boardgamegeek.com/browse/boardgame/page/'
@@ -40,7 +38,7 @@ bgg = "https://boardgamegeek.com"
 
 # loop through every page to get board game links
 # first 256 pages of bgg
-for i in range(1,2):
+for i in range(1,5):
 
     # build on base url to iterate through pages
     url = url1 + str(i) + url2
@@ -67,17 +65,17 @@ for i in range(1,2):
 # print(len(game_links))
 
 #get list of all mechanics
-mech_page = 'https://boardgamegeek.com/browse/boardgamemechanic'
-driver.get(mech_page)
-mechanics_parent = driver.find_elements_by_xpath \
-    ('//*[@id="maincontent"]/table/tbody')
-all_mechs = []
-for element in mechanics_parent:
-    temp = element.find_elements_by_xpath \
-        ('.//a')
-    for a in temp:
-        all_mechs.append(a.text)
-driver.close()
+# mech_page = 'https://boardgamegeek.com/browse/boardgamemechanic'
+# driver.get(mech_page)
+# mechanics_parent = driver.find_elements_by_xpath \
+#     ('//*[@id="maincontent"]/table/tbody')
+# all_mechs = []
+# for element in mechanics_parent:
+#     temp = element.find_elements_by_xpath \
+#         ('.//a')
+#     for a in temp:
+#         all_mechs.append(a.text)
+# driver.close()
 
 
 #get data from BBG API requests
@@ -127,11 +125,10 @@ for i in range(0, len(game_ids), split):
                          usersrated, avg, bayesavg, owners, traders, wanters, wishers, numcomments,
                          numweights, avgweight, categories, mechanics))
         writer.writerow(this_row)
-        games.append(this_row)
+        # games.append(this_row)
 
     time.sleep(2)
 out_file.close()
 
 # add columns for each mechanic and category
-df = pd.DataFrame(games, columns=cols)
-
+# df = pd.DataFrame(games, columns=cols)
