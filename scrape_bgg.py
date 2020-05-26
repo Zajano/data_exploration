@@ -179,10 +179,6 @@ for i in range(2):
         for a in temp:
             mechanics.append(a.text)
 
-    # print(mechanics)
-
-#     all_mechs = [Acting
-
     addition = ((title,
                  year,
                  min_players,

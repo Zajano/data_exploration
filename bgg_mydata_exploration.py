@@ -43,14 +43,16 @@ sns.stripplot(x='year', y='avg_rating', data=bgg2, jitter=.3)
 # for i in range(2011, 2019):
 plt.show()
 
- ## FILTER BY MECHANICS DESIRED!!
-mask = bgg2.mechanics.apply(lambda x: 'Trading' in x)
-trading_games = bgg2[mask]
-trading_games = trading_games.sort_values(['year'], ascending=[True])
+sns.set(rc={'figure.figsize':(8,8)})
 
-mask = bgg2.mechanics.apply(lambda x: 'Variable Player Powers' in x)
+ ## FILTER BY MECHANICS DESIRED!!
+mask = bgg2.mechanics.apply(lambda row: 'Trading' in row)
+trading_games = bgg2[mask]
+# trading_games = trading_games.sort_values(['year'], ascending=[True])
+
+mask = bgg2.mechanics.apply(lambda row: 'Variable Player Powers' in row)
 variable_games = bgg2[mask]
-variable_games = variable_games.sort_values(['year'], ascending=[True])
+# variable_games = variable_games.sort_values(['year'], ascending=[True])
 
 sns.scatterplot(x='year', y='avg_rating',data=trading_games)
 sns.scatterplot(x='year', y='avg_rating',data=variable_games)

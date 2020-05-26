@@ -5,7 +5,6 @@
 # scraping modules
 import requests
 from scrapy import Selector
-from selenium.webdriver import Chrome
 from bs4 import BeautifulSoup
 
 # pandas for csv
@@ -64,23 +63,10 @@ for i in range(1,51):
 
 # print(len(game_links))
 
-#get list of all mechanics
-# mech_page = 'https://boardgamegeek.com/browse/boardgamemechanic'
-# driver.get(mech_page)
-# mechanics_parent = driver.find_elements_by_xpath \
-#     ('//*[@id="maincontent"]/table/tbody')
-# all_mechs = []
-# for element in mechanics_parent:
-#     temp = element.find_elements_by_xpath \
-#         ('.//a')
-#     for a in temp:
-#         all_mechs.append(a.text)
-# driver.close()
-
 
 #get data from BBG API requests
 base = 'http://www.boardgamegeek.com/xmlapi2/thing?id={}&stats=1'
-split = 30 # number of games per API page
+split = 25 # number of games per API page
 out_file = open('games_data.csv', 'w', encoding='utf-8')
 writer = csv.writer(out_file)
 cols = ['id', 'type', 'name', 'year', 'minplayers', 'maxplayers', 'playingtime',

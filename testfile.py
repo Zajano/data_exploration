@@ -1,19 +1,35 @@
-def maxArea(height):
 
-    largest = 0
-    start = 0
+def maxDistToClosest(seats: List[int]) -> int:
 
-    for h in height:
-        start += 1
+    longest = 0
+    tracking = 0
+    dist = 0
+    first = 0
 
-        for i in range(start + 1, len(height)):
-            dist = i - start
-            short = min(height[i], h)
-            container = dist * short
-            if container > largest:
-                largest = container
+    for i in range(len(seats)):
+        if seats[i] == 0:
+            tracking += 1
+        else:
+            if first == 0:
+                first = tracking
+            if tracking > longest:
+                longest = tracking
+                if tracking % 2 == 0:
+                    seat = i - (tracking // 2)
+                else:
+                    seat = i - (tracking // 2) + 1
 
-    return largest
+                dist = tracking // 2
+                tracking = 0
 
-eights = [1,8,6,2,5,4,8,3,7]
-print(maxArea(eights))
+        if i == len(seats) - 1 and tracking > dist:
+            seat = i
+            dist = tracking
+
+    if first > dist:
+        seat = 0
+
+    return seat
+
+eights = [1,0,0,0,1,0,1]
+print(maxDistToClosest(eights))
