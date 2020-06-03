@@ -7,14 +7,14 @@ import requests
 from scrapy import Selector
 from bs4 import BeautifulSoup
 
-# pandas for csv
-import pandas as pd
+# for csv writing
 import csv
 
 # time delay for requests
 import time
 
 # extract data from api structure
+# https://github.com/ThaWeatherman/scrapers/tree/master/boardgamegeek
 def get_val(tag, term):
     try:
         val = tag.find(term)['value']
@@ -27,23 +27,27 @@ def get_val(tag, term):
 # driver = Chrome(webdriver)
 
 # starting urls for game list without page number
+# order by number of votes
 url1 = 'https://boardgamegeek.com/browse/boardgame/page/'
 url2 = '?sort=numvoters&sortdir=desc'
 
+
+
 #variables for use in loop
-game_links = []
+# game_links = []
 game_ids = []
 bgg = "https://boardgamegeek.com"
 
 # loop through every page to get board game links
 # first 256 pages of bgg
-for i in range(1,51):
+for i in range(1,256):
 
     # build on base url to iterate through pages
     url = url1 + str(i) + url2
 
     # gets html content from given url
     time.sleep(1)
+    print(i)
     html = requests.get(url).content
 
     # selector object to navigate
@@ -55,36 +59,54 @@ for i in range(1,51):
     # extract text value from navigated path
     temp_links = sel.xpath(x_path).extract()
 
-    # append the site name to get the full URL of games
+    # append the site name to get the full URL and ID of games
     for i in range(len(temp_links)):
-        game_links.append(bgg + temp_links[i])
+        # game_links.append(bgg + temp_links[i])
         game_ids.append((temp_links[i]).split('/')[2])
 
 
-# print(len(game_links))
+# column of data to be collected
+cols = ['type',
+        'name',
+        'year',
+        'minplayers',
+        'maxplayers',
+        'playingtime',
+        'minplaytime',
+        'maxplaytime',
+        'minage',
+        'users_rated',
+        'avg_rating',
+        'bay_rating',
+        'owners',
+        'traders',
+        'wanters',
+        'wishers',
+        'total_comments',
+        'num_votes',
+        'complexity',
+        'categories',
+        'mechanics']
 
 
-#get data from BBG API requests
+# setup for BGG API request - API stats page and how many games per page
 base = 'http://www.boardgamegeek.com/xmlapi2/thing?id={}&stats=1'
-split = 25 # number of games per API page
-out_file = open('games_data.csv', 'w', encoding='utf-8')
+games_pp = 30
+
+# file to write to for data
+out_file = open('final_data.csv', 'w', encoding='utf-8')
 writer = csv.writer(out_file)
-cols = ['id', 'type', 'name', 'year', 'minplayers', 'maxplayers', 'playingtime',
-                 'minplaytime', 'maxplaytime', 'minage', 'users_rated', 'avg_rating',
-                 'bay_rating', 'owners', 'traders', 'wanters', 'wishers', 'total_comments',
-                 'total_weights', 'complexity', 'categories', 'mechanics']
 writer.writerow(cols)
 
 games = []
 
-for i in range(0, len(game_ids), split):
-    url = base.format(','.join(game_ids[i:i+split]))
+for i in range(0, len(game_ids), games_pp):
+    url = base.format(','.join(game_ids[i:i+games_pp]))
     print('Requesting {}'.format(url))
     req = requests.get(url)
     soup = BeautifulSoup(req.content, 'xml')
     items = soup.find_all('item')
     for item in items:
-        gid = item['id']
         gtype = item['type']
         gname = get_val(item, 'name')
         gyear = get_val(item, 'yearpublished')
@@ -107,15 +129,31 @@ for i in range(0, len(game_ids), split):
         categories = [x['value'] for x in item.findAll(type='boardgamecategory')]
         mechanics = [x['value'] for x in item.findAll(type='boardgamemechanic')]
 
-        this_row = ((gid, gtype, gname, gyear, gmin, gmax, gplay, gminplay, gmaxplay, gminage,
-                         usersrated, avg, bayesavg, owners, traders, wanters, wishers, numcomments,
-                         numweights, avgweight, categories, mechanics))
+        new_row = ((gtype,
+                     gname,
+                     gyear,
+                     gmin,
+                     gmax,
+                     gplay,
+                     gminplay,
+                     gmaxplay,
+                     gminage,
+                     usersrated,
+                     avg,
+                     bayesavg,
+                     owners,
+                     traders,
+                     wanters,
+                     wishers,
+                     numcomments,
+                     numweights,
+                     avgweight,
+                     categories,
+                     mechanics))
 
-        writer.writerow(this_row)
-        # games.append(this_row)
+        writer.writerow(new_row)
+
+    #pause before another API request is made
     time.sleep(2)
 
 out_file.close()
-
-# add columns for each mechanic and category
-# df = pd.DataFrame(games, columns=cols)

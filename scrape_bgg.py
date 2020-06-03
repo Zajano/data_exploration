@@ -5,9 +5,12 @@
 # scraping modules
 import requests
 from scrapy import Selector
-from selenium.webdriver import Chrome
+from selenium import webdriver
 
-# pandas for csv
+# to avoid needing driver updates
+from webdriver_manager.chrome import ChromeDriverManager
+
+# pandas for csv and dataframe
 import pandas as pd
 import csv
 
@@ -16,8 +19,10 @@ import time
 
 # driver to crawl links - paths for 2 different computers
 # webdriver = "C:\\Users\\Zack\\Desktop\\OSU\\406 - p1 - stats\\test_files\\chromedriver.exe"
-webdriver = "C:\\Users\\zacki\\Desktop\\OSU\\406 - p1 - stats\\test_files\\chromedriver.exe"
-driver = Chrome(webdriver)
+# webdriver = "C:\\Users\\zacki\\Desktop\\OSU\\406 - p1 - stats\\test_files\\chromedriver.exe"
+
+# using webdriver-manager so updates don't break code
+driver = webdriver.Chrome(ChromeDriverManager().install())
 
 # starting urls for game list without page number
 url1 = 'https://boardgamegeek.com/browse/boardgame/page/'
@@ -30,6 +35,7 @@ bgg = "https://boardgamegeek.com"
 # loop through every page to get board game links
 # first 256 pages of bgg
 for i in range(1,2):
+    print(i)
 
     # build on base url to iterate through pages
     url = url1 + str(i) + url2
@@ -51,29 +57,46 @@ for i in range(1,2):
     for i in range(len(temp_links)):
         game_links.append(bgg + temp_links[i])
 
-
-# print(len(game_links))
-
-#get list of all mechanics
+# get list of all mechanics
 mech_page = 'https://boardgamegeek.com/browse/boardgamemechanic'
 driver.get(mech_page)
-
-mechanics_parent = driver.find_elements_by_xpath \
+mechanics_parent = driver.find_elements_by_xpath\
     ('//*[@id="maincontent"]/table/tbody')
-
 all_mechs = []
 for element in mechanics_parent:
-    temp = element.find_elements_by_xpath \
+    temp = element.find_elements_by_xpath\
         ('.//a')
     for a in temp:
         all_mechs.append(a.text)
 
-print(all_mechs)
+# print(all_mechs)
+
+# columns of data being collected
+cols = ["title",
+         "year",
+         "min_players",
+         "max_players",
+         "avg_time",
+         "geek_age",
+         "community_age",
+         "avg_rating",
+         "num_ratings",
+         "complexity",
+         "comments",
+         "fans",
+         "views",
+         "mechanics",
+        "categories"]
+
+# write to file in loop
+out_file = open('extra_data.csv', 'w', encoding='utf-8')
+writer = csv.writer(out_file)
+writer.writerow(cols)
 
 game_info = []
 
 # for each link in game_links:
-for i in range(2):
+for i in range(5):
 
     #pages with all the info I want
     stats = game_links[i] + "/stats"
@@ -109,7 +132,7 @@ for i in range(2):
         ('//ul[@class="gameplay"]/li[3]/div[2]/span/button/span')
     avg_rating = float(driver.find_elements_by_xpath\
         ('//div[@class="row game-stats"]/div[2]/div/div[2]/ul/li[1]/div[2]/a')[0].text)
-    no_ratings = driver.find_elements_by_xpath\
+    num_ratings = driver.find_elements_by_xpath\
         ('//div[@class="row game-stats"]/div[2]/div/div[2]/ul/li[2]/div[2]/a')[0].text
     complexity = driver.find_elements_by_xpath\
         ('//div[@class="row game-stats"]/div[2]/div/div[2]/ul/li[4]/div[2]/a/span')
@@ -160,8 +183,9 @@ for i in range(2):
     except:
         complexity = None
 
+
     #get rid of commas in numbers
-    no_ratings = int(no_ratings.replace(',', ''))
+    num_ratings = int(num_ratings.replace(',', ''))
     comments = int(comments.replace(',', ''))
     fans = int(fans.replace(',', ''))
     views = int(views.replace(',', ''))
@@ -169,9 +193,9 @@ for i in range(2):
     # get stuff from Credits page
     driver.get(credits)
 
+    # get mechanics element, iterate through entries for lsit
     mechanics_parent = driver.find_elements_by_xpath\
         ('//*[@id="mainbody"]/div/div[1]/div[1]/div[2]/ng-include/div/div/ui-view/ui-view/div/div/div[2]/credits-module/ul/li[8]/div[2]/div')
-
     mechanics = []
     for element in mechanics_parent:
         temp = element.find_elements_by_xpath\
@@ -179,7 +203,17 @@ for i in range(2):
         for a in temp:
             mechanics.append(a.text)
 
-    addition = ((title,
+    # same for categories
+    category_parent = driver.find_elements_by_xpath\
+        ('//*[@id="mainbody"]/div/div[1]/div[1]/div[2]/ng-include/div/div/ui-view/ui-view/div/div/div[2]/credits-module/ul/li[7]/div[2]/div')
+    categories = []
+    for element in category_parent:
+        temp = element.find_elements_by_xpath\
+            ('.//a')
+        for a in temp:
+            categories.append(a.text)
+
+    new_row = ((title,
                  year,
                  min_players,
                  max_players,
@@ -187,33 +221,23 @@ for i in range(2):
                  geek_age,
                  community_age,
                  avg_rating,
-                 no_ratings,
+                 num_ratings,
                  complexity,
                  comments,
                  fans,
                  views,
-                 mechanics))
-    game_info.append(addition)
+                 mechanics,
+                 categories))
 
-# print(game_info)
-cols = ["title",
-         "year",
-         "min_players",
-         "max_players",
-         "avg_time",
-         "geek_age",
-         "community_age",
-         "avg_rating",
-         "no_ratings",
-         "complexity",
-         "comments",
-         "fans",
-         "views",
-         "mechanics"]
+    # list for data frame, write row to file
+    game_info.append(new_row)
+    writer.writerow(new_row)
+
 df = pd.DataFrame(game_info, columns= cols)
 
 print(df.head())
-df.to_csv('game_garbage.csv')
+df.to_csv('extra_extra_data.csv')
 
 driver.close()
+out_file.close()
 
