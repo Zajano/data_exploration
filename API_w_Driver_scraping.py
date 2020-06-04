@@ -130,7 +130,7 @@ for i in range(len(game_links)):
     soup = BeautifulSoup(req.content, 'xml')
     items = soup.find_all('item')
 
-    # for poll data?
+    # for poll data
     html = req.content
     sel = Selector(text=html)
 
