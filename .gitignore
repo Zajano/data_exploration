@@ -1,0 +1,8 @@
+
+.idea/
+.vscode/
+venv/
+old data/
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
