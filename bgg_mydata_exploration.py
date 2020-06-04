@@ -9,7 +9,7 @@ import seaborn as sns
 import numpy as np
 
 # import data
-bgg_data = pd.read_csv('games_data.csv', encoding='latin-1')
+bgg_data = pd.read_csv('game_data.csv', encoding='latin-1')
 sns.set()
 
 # manipulate figure size

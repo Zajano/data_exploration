@@ -69,12 +69,12 @@ for i in range(1,256):
 cols = ['type',
         'name',
         'year',
-        'minplayers',
-        'maxplayers',
-        'playingtime',
-        'minplaytime',
-        'maxplaytime',
-        'minage',
+        'min_players',
+        'max_players',
+        'avg_time',
+        'min_time',
+        'max_time',
+        'min_age',
         'users_rated',
         'avg_rating',
         'bay_rating',
@@ -83,7 +83,7 @@ cols = ['type',
         'wanters',
         'wishers',
         'total_comments',
-        'num_votes',
+        'weight_votes',
         'complexity',
         'categories',
         'mechanics']
@@ -112,10 +112,17 @@ for i in range(0, len(game_ids), games_pp):
         gyear = get_val(item, 'yearpublished')
         gmin = get_val(item, 'minplayers')
         gmax = get_val(item, 'maxplayers')
-        gplay = get_val(item, 'playingtime')
+        # gplay = get_val(item, 'playingtime')
         gminplay = get_val(item, 'minplaytime')
         gmaxplay = get_val(item, 'maxplaytime')
+        if gminplay != 'NaN' and gmaxplay != 'NaN':
+            gplay = (gminplay + gmaxplay) / 2
+        else:
+            gplay = 'NaN'
+
+        
         gminage = get_val(item, 'minage')
+
         usersrated = get_val(item.statistics.ratings, 'usersrated')
         avg = get_val(item.statistics.ratings, 'average')
         bayesavg = get_val(item.statistics.ratings, 'bayesaverage')
