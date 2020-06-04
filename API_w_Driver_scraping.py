@@ -223,7 +223,7 @@ for i in range(5):
 
 # df = pd.DataFrame(game_info, columns= cols)
 
-# print(df.head())
+# print(df.head()) ok
 # df.to_csv('extra_extra_data.csv')
 
 driver.close()
