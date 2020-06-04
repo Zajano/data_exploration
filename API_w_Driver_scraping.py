@@ -55,7 +55,7 @@ bgg = "https://boardgamegeek.com"
 
 # loop through every page to get board game links and IDs
 # first 256 pages of bgg
-for i in range(1,2):
+for i in range(1,256):
 
     # build on base url to iterate through pages
     url = url1 + str(i) + url2
@@ -118,7 +118,7 @@ games_pp = 1
 game_info = []
 
 # for each link in game_links:
-for i in range(5):
+for i in range(len(game_links)):
 
     # request API and driver stats page
     time.sleep(1)
