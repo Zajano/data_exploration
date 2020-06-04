@@ -135,10 +135,19 @@ for i in range(len(game_links)):
     sel = Selector(text=html)
 
     # fans and page views
-    fans = driver.find_elements_by_xpath\
-    ('//div[@class="row game-stats"]/div[2]/div/div[2]/ul/li[6]/div[2]/a')[0].text
-    views = driver.find_elements_by_xpath\
-    ('//div[@class="row game-stats"]/div[2]/div/div[2]/ul/li[7]/div[2]')[0].text
+    try:
+        fans = driver.find_elements_by_xpath\
+        ('//div[@class="row game-stats"]/div[2]/div/div[2]/ul/li[6]/div[2]/a')[0].text
+        views = driver.find_elements_by_xpath\
+        ('//div[@class="row game-stats"]/div[2]/div/div[2]/ul/li[7]/div[2]')[0].text
+    except:
+        time.sleep(30)
+        driver.get(stats)
+        fans = driver.find_elements_by_xpath\
+        ('//div[@class="row game-stats"]/div[2]/div/div[2]/ul/li[6]/div[2]/a')[0].text
+        views = driver.find_elements_by_xpath\
+        ('//div[@class="row game-stats"]/div[2]/div/div[2]/ul/li[7]/div[2]')[0].text
+
 
     for item in items:
         type = item['type']

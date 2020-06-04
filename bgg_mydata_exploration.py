@@ -7,10 +7,15 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
+from itertools import chain
 
 # import data
-bgg_data = pd.read_csv('game_data.csv', encoding='latin-1')
+bgg_data = pd.read_csv('game_data.csv', encoding='latin-1', converters={'mechanics': eval, 'categories': eval})
 sns.set()
+
+# number of each type of game
+mech_counts = pd.Series(list(chain.from_iterable(bgg_data.mechanics))).value_counts()
+cat_counts = pd.Series(list(chain.from_iterable(bgg_data.categories))).value_counts()
 
 # manipulate figure size
 sns.set(rc={'figure.figsize':(16,8)})
@@ -22,40 +27,29 @@ sns.set(rc={'figure.figsize':(16,8)})
 
 
 # filter to recent years
-bgg2 = bgg_data[bgg_data["year"] > 1989]
-
-# make "year" index
-# year_ind = bgg2.set_index("year")
-# year_ind = year_ind.sort_index()
-
-# boxplot by year and rating
-# sns.boxplot(x='year', y='avg_rating', data = bgg2)
+bgg_1989 = bgg_data[bgg_data["year"] > 1989]
 
 # convert years to strings
-bgg2.year=bgg2.year.astype(str)
+bgg_1989.year = bgg_1989.year.astype(str)
 
-sns.lineplot(x='year', y='avg_rating', data=bgg2)
+sns.lineplot(x='year', y='avg_rating', data=bgg_1989)
 # sns.scatterplot(x='year', y='avg_rating', data=bgg2, x_jitter=.3, hue='year')
-sns.stripplot(x='year', y='avg_rating', data=bgg2, jitter=.3)
-
-# bgg_data.groupby()
+sns.stripplot(x='year', y='avg_rating', data=bgg_1989, jitter=.3)
 
 # for i in range(2011, 2019):
 plt.show()
-
-sns.set(rc={'figure.figsize':(8,8)})
-
- ## FILTER BY MECHANICS DESIRED!!
-mask = bgg2.mechanics.apply(lambda row: 'Trading' in row)
-trading_games = bgg2[mask]
-# trading_games = trading_games.sort_values(['year'], ascending=[True])
-
-mask = bgg2.mechanics.apply(lambda row: 'Variable Player Powers' in row)
-variable_games = bgg2[mask]
-# variable_games = variable_games.sort_values(['year'], ascending=[True])
-
-sns.scatterplot(x='year', y='avg_rating',data=trading_games)
-sns.scatterplot(x='year', y='avg_rating',data=variable_games)
-plt.show()
-
-print (trading_games)
+#
+# sns.set(rc={'figure.figsize':(8,8)})
+#
+#  ## FILTER BY MECHANICS DESIRED!!
+# mask = bgg2.mechanics.apply(lambda row: 'Trading' in row)
+# trading_games = bgg2[mask]
+# trading_games['Trading'] = 'Trading'
+#
+# mask = bgg2.mechanics.apply(lambda row: 'Variable Player Powers' in row)
+# variable_games = bgg2[mask]
+#
+#
+# sns.scatterplot(x='year', y='avg_rating',data=trading_games)
+# sns.scatterplot(x='year', y='avg_rating',data=variable_games)
+# plt.show()
