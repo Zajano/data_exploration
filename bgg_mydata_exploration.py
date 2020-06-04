@@ -42,9 +42,11 @@ plt.show()
 # sns.set(rc={'figure.figsize':(8,8)})
 #
 #  ## FILTER BY MECHANICS DESIRED!!
-# mask = bgg2.mechanics.apply(lambda row: 'Trading' in row)
-# trading_games = bgg2[mask]
-# trading_games['Trading'] = 'Trading'
+mask = bgg_data.mechanics.apply(lambda row: 'Trading' in row)
+trading_games = bgg_data[mask]
+trading_games['mechanics'] = 'Trading'
+
+print(trading_games['mechanics'])
 #
 # mask = bgg2.mechanics.apply(lambda row: 'Variable Player Powers' in row)
 # variable_games = bgg2[mask]
