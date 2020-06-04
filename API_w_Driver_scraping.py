@@ -182,13 +182,21 @@ for i in range(len(game_links)):
         categories = [x['value'] for x in item.findAll(type='boardgamecategory')]
         mechanics = [x['value'] for x in item.findAll(type='boardgamemechanic')]
 
-    #gather elements from /stats page
+    # gather elements from /stats page
     # community_age = driver.find_elements_by_xpath\
     #     ('//ul[@class="gameplay"]/li[3]/div[2]/span/button/span')
 
-    #get rid of commas in numbers
-    fans = int(fans.replace(',', ''))
-    views = int(views.replace(',', ''))
+    # get rid of commas in numbers
+    # broken @ https://boardgamegeek.com/boardgame/204583/kingdomino/stats
+    try:
+        fans = int(fans.replace(',', ''))
+    except:
+        fans = 0
+
+    try:
+        views = int(views.replace(',', ''))
+    except:
+        views = 0
 
 
     new_row = ((type,
