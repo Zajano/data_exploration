@@ -54,8 +54,8 @@ game_ids = []
 bgg = "https://boardgamegeek.com"
 
 # loop through every page to get board game links and IDs
-# first 256 pages of bgg
-for i in range(1,256):
+# first 258 pages of bgg - everything with 30 or more community votes
+for i in range(1,258):
 
     # build on base url to iterate through pages
     url = url1 + str(i) + url2
