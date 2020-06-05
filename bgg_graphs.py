@@ -2,10 +2,11 @@
 # Date: 6/4/2020
 # Description: graphs for final presentation
 
-# Import plotting modules
+# Import plotting and organization modules
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+from itertools import chain
 
 
 # import data, convert mechanics and categories to lists
@@ -74,11 +75,11 @@ def top_mechs_vs_complexity():
     sns.set(rc={'figure.figsize':(8,16)})
     g_name = 'top_mechs_vs_complexity'
 
-    # number of each type of mechanic and category
+    # # number of each type of mechanic and category
     # mech_counts = pd.Series(list(chain.from_iterable(bgg_data.mechanics))).value_counts()
     # cat_counts = pd.Series(list(chain.from_iterable(bgg_data.categories))).value_counts()
 
-    # 10 most popular of each type
+    # # 10 most popular of each type
     # top_mechs = list(mech_counts.nlargest(n=10).index.values)
     # top_cats = list(cat_counts.nlargest(n=10).index.values)
     # print(top_mechs)
@@ -163,8 +164,12 @@ def comp_v_rating():
     # graph dimensions and name
     sns.set(rc={'figure.figsize':(16,8)})
     g_name = 'complexity_vs_rating'
+
+    # filter and plot
     cvr = bgg_data[bgg_data['complexity'] > 0]
     sns.regplot(x='complexity', y='avg_rating', data=cvr, line_kws={"color": "grey"})
+
+    plt.savefig(graphs_loc + g_name, bbox_inches='tight')
     plt.show()
 
 def something_else():
@@ -173,10 +178,42 @@ def something_else():
     g.ax_joint.collections[0].set_alpha(0)
     g.set_axis_labels("$complexity$", "$average rating$")
     plt.show()
+
+def lollipop_2():
+    '''top 10 mechanics by complexity'''
+    # graph dimensions and name
+    sns.set(rc={'figure.figsize': (8, 16)})
+    g_name = 'top_mechs_over_time'
+
+    bgg_2019 = bgg_data[bgg_data['year'] == 2020]
+    bgg_1990 = bgg_data[bgg_data['year'] == 1990]
+
+    # number of each type of mechanic and category
+    counts_2019 = pd.Series(list(chain.from_iterable(bgg_2019.mechanics))).value_counts()
+    counts_1990 = pd.Series(list(chain.from_iterable(bgg_1990.mechanics))).value_counts()
+
+    sort_1990 = counts_1990.sort_values()
+
+    # sort_1990 = sort_1990.fillna(value=0, axis=0, inplace=True)
+    mech_years = pd.concat([sort_1990, counts_2019], axis=1).fillna(0)
+    my_range = range(1, len(mech_years.index) + 1)
+    # print(mech_years)
+
+    plt.hlines(y=my_range, xmin=mech_years[0], xmax=mech_years[1], color='grey', alpha=0.4)
+    plt.scatter(mech_years[0], my_range, color='skyblue', alpha=1, label='1990')
+    plt.scatter(mech_years[1], my_range, color='green', alpha=0.4, label='2019')
+    plt.legend()
+    plt.ylabel('Category')
+    plt.xlabel('Games Published')
+
+    # plt.savefig(graphs_loc + g_name, bbox_inches='tight')
+    plt.show()
+
 # pair_plot()
 # col_vs_year('avg_rating')
 # col_vs_year('complexity')
 # top_mechs_vs_complexity()
 # top_mechs_vs_years()
 # complexity_vs_playtime()
-comp_v_rating()
+# comp_v_rating()
+lollipop_2()
