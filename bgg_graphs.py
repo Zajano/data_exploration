@@ -147,6 +147,7 @@ def top_mechs_vs_years():
     plt.show()
 
 def complexity_vs_playtime():
+    '''boring and predictable results'''
     b_c = bgg_data[bgg_data['complexity'] > 0]
     b_mint1 = b_c[b_c['minplaytime'] <= 120]
     b_mint2 = b_mint1[b_mint1['minplaytime'] > 0]
@@ -172,36 +173,35 @@ def comp_v_rating():
     plt.savefig(graphs_loc + g_name, bbox_inches='tight')
     plt.show()
 
-def something_else():
-    g = sns.jointplot(x="complexity", y="avg_rating", data=cvr, kind="kde", color="m")
-    # g.plot_joint(plt.scatter, c="w", s=30, linewidth=1, marker="+")
-    g.ax_joint.collections[0].set_alpha(0)
-    g.set_axis_labels("$complexity$", "$average rating$")
-    plt.show()
-
-def lollipop_2():
-    '''top 10 mechanics by complexity'''
+def mechanics_years_dumbell(year1, year2):
+    '''mechanics popularity changes between two years'''
     # graph dimensions and name
     sns.set(rc={'figure.figsize': (8, 16)})
     g_name = 'top_mechs_over_time'
 
-    bgg_2019 = bgg_data[bgg_data['year'] == 2020]
-    bgg_1990 = bgg_data[bgg_data['year'] == 1990]
+    bgg_1990 = bgg_data[bgg_data['year'] == year1]
+    bgg_2019 = bgg_data[bgg_data['year'] == year2]
 
     # number of each type of mechanic and category
     counts_2019 = pd.Series(list(chain.from_iterable(bgg_2019.mechanics))).value_counts()
     counts_1990 = pd.Series(list(chain.from_iterable(bgg_1990.mechanics))).value_counts()
 
-    sort_1990 = counts_1990.sort_values()
+    sort_1990 = counts_1990.sort_values(ascending=False)
 
     # sort_1990 = sort_1990.fillna(value=0, axis=0, inplace=True)
     mech_years = pd.concat([sort_1990, counts_2019], axis=1).fillna(0)
-    my_range = range(1, len(mech_years.index) + 1)
-    # print(mech_years)
+    mech_range = range(1, len(mech_years.index) + 1)
+    print(mech_years)
 
-    plt.hlines(y=my_range, xmin=mech_years[0], xmax=mech_years[1], color='grey', alpha=0.4)
-    plt.scatter(mech_years[0], my_range, color='skyblue', alpha=1, label='1990')
-    plt.scatter(mech_years[1], my_range, color='green', alpha=0.4, label='2019')
+    # get percentages instead of totals
+    sum1, sum2 = mech_years[0].sum(), mech_years[1].sum()
+    mech_years[0] = mech_years[0] / sum1
+    mech_years[1] = mech_years[1] / sum2
+
+    # plot and organize data
+    plt.hlines(y=mech_range, xmin=mech_years[0], xmax=mech_years[1], color='grey', alpha=0.4)
+    plt.scatter(mech_years[0], mech_years.index, color='skyblue', alpha=1, label='1990')
+    plt.scatter(mech_years[1], mech_years.index, color='green', alpha=0.4, label='2019')
     plt.legend()
     plt.ylabel('Category')
     plt.xlabel('Games Published')
@@ -209,11 +209,35 @@ def lollipop_2():
     # plt.savefig(graphs_loc + g_name, bbox_inches='tight')
     plt.show()
 
-# pair_plot()
-# col_vs_year('avg_rating')
-# col_vs_year('complexity')
-# top_mechs_vs_complexity()
-# top_mechs_vs_years()
-# complexity_vs_playtime()
-# comp_v_rating()
-lollipop_2()
+def vs_heatmap(col1, col2):
+    '''generates heatmap from density of 2 column relations'''
+
+    # graph dimensions and name
+    sns.set(rc={'figure.figsize':(10,10)})
+    g_name = col1 + '_vs_' + col2 + '_heatmap'
+
+    # filter and plot
+    cvr = clean_bgg[clean_bgg[col1] > 0]
+    cvr = cvr[cvr[col2] > 0]
+    g = sns.jointplot(x=col1, y=col2, data=cvr, kind="kde", color="m")
+    # g.plot_joint(plt.scatter, c="w", s=30, linewidth=1, marker="+")
+    g.ax_joint.collections[0].set_alpha(0)
+    g.set_axis_labels(str(col1), str(col2))
+
+    # save and display
+    plt.savefig(graphs_loc + g_name, bbox_inches='tight')
+    plt.show()
+
+
+def main():
+    # pair_plot()
+    # col_vs_year('avg_rating')
+    # col_vs_year('complexity')
+    # top_mechs_vs_complexity()
+    # top_mechs_vs_years()
+    # complexity_vs_playtime()
+    # comp_v_rating()
+    # mechanics_years_dumbell(1990, 2019)
+    vs_heatmap('complexity', 'minage')
+
+if __name__ == "__main__": main()

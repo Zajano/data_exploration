@@ -18,6 +18,6 @@ class MyFirstSpider(scrapy.Spider):
             yield scrapy.Request( url = url, callback = self.parse)
 
     def parse(self, response):
-        html_file = 'DC_courses.html'
+        html_file = 'bgg.html'
         with open(html_file, 'wb') as fout:
             fout.write(response.body)

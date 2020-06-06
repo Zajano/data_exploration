@@ -16,6 +16,7 @@ import time
 # extract data from api structure
 # https://github.com/ThaWeatherman/scrapers/tree/master/boardgamegeek
 def get_val(tag, term):
+    '''extract value from target in parent elements of BGG API'''
     try:
         val = tag.find(term)['value']
     except:
