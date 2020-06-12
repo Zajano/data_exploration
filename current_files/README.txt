@@ -1,14 +1,5 @@
 USAGE INSTRUCTIONS FOR bgg_graphs.py
 
-The files used for the final products, and described in the report, are in the folder "final files"
-
-"progress files" contains an unorganized array of files that were used throughout the quarter
-to help me learn and become familiar with the tools and data I was using. There are comments
-if the files, but there is no defined usage for them.
-
-"graphs" contains png files of the graphsultimately chosen for generation, as well as their
-oddly behaving counterparts used in the examples of the report. 
-
 IF DATA COLLECTION IS DESIRED:
 
 There are 3 data gathering methods to select from: driver_scraping.py, API_scraping.py, and combined.py
