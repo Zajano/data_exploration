@@ -5,4 +5,11 @@ random implementations of various data exploration methods here.
 I had no background in statistics or data analysis, thought this
 would be a fun way to learn about some of it.
 
-See 'final files' for more tuned work
+"progress files" contains an unorganized array of files that were used throughout the quarter
+to help me learn and become familiar with the tools and data I was using. There are comments
+if the files, but there is no defined usage for them.
+
+"graphs" contains png files of the graphsultimately chosen for generation, as well as their
+oddly behaving counterparts used in the examples of the report. 
+
+"current_files" contains the most recent exploration methods and usage instructions
